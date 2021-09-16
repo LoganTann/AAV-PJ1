@@ -1,22 +1,24 @@
 package sac;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class SacADos {
-	private float poidsMaximal;
-	private ArrayList<Objet> objets;
-	
+	private final float poidsMaximal;
+	private ArrayList<Objet> objets = new ArrayList<>();
+
 	public SacADos() {
 		poidsMaximal = 30;
-		objets = new ArrayList<>();
 	}
-	
-	public SacADos(String chemin, float poidsMaximal) {
+
+	public SacADos(String chemin, float poidsMaximal) throws FileNotFoundException {
 		this.poidsMaximal = poidsMaximal;
-		//
+
 		Scanner sc= new Scanner(new File(chemin));
-		while (scanner.hasNext()) {
-			String line = scanner.nextLine();
+		while (sc.hasNext()) {
+			String line = sc.nextLine();
 
 			String[] parsed = line.split(";");
 			String objectName = parsed[0];
@@ -27,8 +29,25 @@ public class SacADos {
 			objets.add(object);
 		}
 	}
-	
+
 	public String toString() {
-		return "poids max : " + this.poidsMaximal + "kg";
+		StringBuilder out = new StringBuilder("[?] ; valeur; poids ; nom\n---------------------------\n");
+		float totalWeight = 0;
+		float totalValue = 0;
+
+		// Affichage de chaque objet
+		for (Objet objet: this.objets) {
+			out.append(objet.toString());
+			// compte la valeur et le poids du sac
+			if (objet.isInTheBag()) {
+				totalValue += objet.getValue();
+				totalWeight += objet.getWeight();
+			}
+		}
+		out.append( "poids  : ").append(totalWeight).append("/").append(this.poidsMaximal).append("kg ")
+			.append((totalWeight > this.poidsMaximal) ? "(Dépassement !)" : "(ok)")
+			.append("\nvaleur : ").append(totalValue).append("\n");
+
+		return out.toString();
 	}
 }
