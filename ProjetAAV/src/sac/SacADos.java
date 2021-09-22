@@ -26,9 +26,18 @@ public class SacADos {
 			float objectPrice = Float.parseFloat(parsed[2]);
 
 			Objet object = new Objet(objectName, objectValue, objectPrice);
-			objets.add(object);
+			this.add(object);
 		}
 	}
+
+	public float getWeightMax() { return poidsMaximal; }
+
+	public void add(Objet object){
+		object.setIsInTheBag();
+		this.objets.add(object);
+	}
+
+	public Objet getObjet(int i) { return objets.get(i); }
 
 	public String toString() {
 		StringBuilder out = new StringBuilder("[?] ; valeur; poids ; nom\n---------------------------\n");
@@ -47,6 +56,7 @@ public class SacADos {
 		out.append( "poids  : ").append(totalWeight).append("/").append(this.poidsMaximal).append("kg ")
 			.append((totalWeight > this.poidsMaximal) ? "(Dépassement !)" : "(ok)")
 			.append("\nvaleur : ").append(totalValue).append("\n");
+
 
 		return out.toString();
 	}
