@@ -37,7 +37,9 @@ public class Objet {
 	}
 
 	public String toString() {
-		return (this.isInTheBag ? "[x]" : "[ ]" ) + " ; \t" + this.value + " ; \t" + this.weight + " ; \t" + this.name + " ; "+this.ratio +"\n";
+		return String.format("%s ; %6.2f ; %6.2f ; %-20s; %.6f ;\n",
+				this.isInTheBag ? "[x]" : "[ ]" ,
+				this.value, this.weight, this.name, this.ratio );
 	}
 
 	public String getName() {
