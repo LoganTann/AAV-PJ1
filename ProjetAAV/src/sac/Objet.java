@@ -1,10 +1,32 @@
 package sac;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Objet {
-	private String name;
-	private float value, weight;
+	private final String name;
+	private final float value, weight;
+
 	private boolean isInTheBag;
 	private float ratio;
+
+	public static ArrayList<Objet> loadObjectsFromFile(String chemin) throws FileNotFoundException {
+		Scanner sc= new Scanner(new File(chemin));
+		ArrayList<Objet> retval = new ArrayList<>();
+		while (sc.hasNext()) {
+			String line = sc.nextLine();
+			String[] parsed = line.split(";");
+
+			String objectName = parsed[0];
+			float objectValue = Float.parseFloat(parsed[1]);
+			float objectPrice = Float.parseFloat(parsed[2]);
+			Objet object = new Objet(objectName, objectValue, objectPrice);
+			retval.add(object);
+		}
+		return retval;
+	}
 
 	public Objet(String nom, float valeur, float poids) {
 		this.name = nom;

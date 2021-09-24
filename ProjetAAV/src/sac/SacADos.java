@@ -1,9 +1,7 @@
 package sac;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class SacADos {
 	private final float poidsMaximal;
@@ -15,19 +13,7 @@ public class SacADos {
 
 	public SacADos(String chemin, float poidsMaximal) throws FileNotFoundException {
 		this.poidsMaximal = poidsMaximal;
-
-		Scanner sc= new Scanner(new File(chemin));
-		while (sc.hasNext()) {
-			String line = sc.nextLine();
-
-			String[] parsed = line.split(";");
-			String objectName = parsed[0];
-			float objectValue = Float.parseFloat(parsed[1]);
-			float objectPrice = Float.parseFloat(parsed[2]);
-
-			Objet object = new Objet(objectName, objectValue, objectPrice);
-			this.add(object);
-		}
+		this.objets = Objet.loadObjectsFromFile(chemin);
 	}
 
 	public float getWeightMax() { return poidsMaximal; }
