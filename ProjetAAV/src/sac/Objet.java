@@ -20,9 +20,10 @@ public class Objet {
 			String[] parsed = line.split(";");
 
 			String objectName = parsed[0];
-			float objectValue = Float.parseFloat(parsed[1]);
-			float objectPrice = Float.parseFloat(parsed[2]);
-			Objet object = new Objet(objectName, objectValue, objectPrice);
+			float objectWeight = Float.parseFloat(parsed[1]);
+			float objectValue = Float.parseFloat(parsed[2]);
+			// attention ne pas confondre poids (weight) et valeur (value) !
+			Objet object = new Objet(objectName, objectValue, objectWeight);
 			retval.add(object);
 		}
 		return retval;

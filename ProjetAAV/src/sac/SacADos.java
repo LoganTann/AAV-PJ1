@@ -7,8 +7,8 @@ public class SacADos {
 	private final float poidsMaximal;
 	private ArrayList<Objet> objets = new ArrayList<>();
 
-	public SacADos() {
-		poidsMaximal = 30;
+	public SacADos(float maxWeight) {
+		poidsMaximal = maxWeight;
 	}
 
 	public SacADos(String chemin, float poidsMaximal) throws FileNotFoundException {
@@ -16,7 +16,7 @@ public class SacADos {
 		this.objets = Objet.loadObjectsFromFile(chemin);
 	}
 
-	public float getWeightMax() { return poidsMaximal; }
+	public float getMaxWeight() { return poidsMaximal; }
 
 	public void add(Objet object){
 		object.setIsInTheBag();
