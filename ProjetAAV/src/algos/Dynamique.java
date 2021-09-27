@@ -20,7 +20,7 @@ public class Dynamique {
      * @param objects la liste des objets potentiels à mettre dans le sac
      */
     public static void algoDynamique(SacADos bag, List<Objet> objects) {
-        if (objects.isEmpty()) throw new IllegalArgumentException("The ArrayList of objects is empty... ");
+        if (objects.isEmpty()) throw new IllegalArgumentException(Msgs.OBJ_LIST_EMPTY);
         // Initialisation de la matrice de combinaisons:
         // ligne = objets (1-9), col = poids max possibles (0-30), val = prix du sac
         final int row_num = objects.size(), col_num = (int)bag.getMaxWeight()+1;
