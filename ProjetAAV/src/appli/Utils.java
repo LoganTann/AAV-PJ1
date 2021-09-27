@@ -2,17 +2,51 @@ package appli;
 
 
 public class Utils {
+    private Utils() {
+        throw new IllegalStateException(Msgs.STATIC_CLASS);
+    }
+    /**
+     * Définis la précision de comparaison des décimales. Ex :  0.001 = Au millième près.
+     * @see #areSame
+     */
+    private static final double FLOAT_CMP_PRECISION = 0.001;
 
-    // DEBUGGING FUNCTIONS
+    /**
+     * Active le mode verbose (pour débogage uniquement !)
+     * @see #isVerbose()
+     */
+    private static final boolean IS_VERBOSE = true;
+
+
+    /**
+     * Indique si le mode verbose est activé. Cela fait des affichages de débuggage supplémentaire.
+     * <b>Doit être en false lors de la recette de production</b>
+     * @return true si le mode verbose est activé.
+     */
     public static boolean isVerbose() {
-        return true;
+        return IS_VERBOSE;
     }
 
     /**
-     *
-     * @param array
-     * @param formatSize Précision de la partie entière. 100 -> 3
-     * @return
+     * Vérifie si deux nombres flottants sont identiques
+     * @param a premier nombre décimal à comparer
+     * @param b second nombre décimal à comparer
+     * @return true si a et b sont identiques (au millième près par défaut)
+     */
+    public static boolean areSame(float a, float b) {
+        return Math.abs(a - b) < FLOAT_CMP_PRECISION;
+    }
+
+
+    //////////////////////////////
+    // DEBUG ONLY METHODS BELOW //
+    //////////////////////////////
+
+    /**
+     * Fonction utilisée pour le débogage. <b>Ne pas noter !</b>
+     * @param farray un tableau natif de type float[]
+     * @param formatSize Précision de la partie entière. Ex : si on sait que la valeur maximale est inférieure à 999, alors il faut entrer 3.
+     * @return une chaîne de caractère représentant le tableau passé en paramètre
      */
     public static String floatArrayToString(float[] farray, int formatSize) {
         StringBuilder retval = new StringBuilder("[");
@@ -26,11 +60,26 @@ public class Utils {
         }
         return retval.append("]").toString();
     }
+
+
+    /**
+     * Fonction utilisée pour le débogage. <b>Ne pas noter !</b>
+     * @param farray un tableau natif de type float[]
+     * @return une chaîne de caractère représentant le tableau passé en paramètre
+     * @see #floatArrayToString(float[], int)
+     */
     public static String floatArrayToString(float[] farray) {
         return floatArrayToString(farray, 3);
     }
+
+    /**
+     * Fonction utilisée pour le débogage. <b>Ne pas noter !</b>
+     * @param start chiffre de début
+     * @param end chiffre de fin
+     * @return une chaine de caractère issue d'une liste des nombres allant de *start* à *end* générée dynamiquement
+     */
     public static String generateRangeString(int start, int end) {
-        assert(start < end);
+        if (start > end) throw new IllegalArgumentException(Msgs.START_GT_END);
         float[] farray = new float[end - start];
         for (int i = start; i < end; i++) {
             farray[i - start] = i;

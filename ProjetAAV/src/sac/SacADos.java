@@ -1,11 +1,14 @@
 package sac;
 
+import appli.Msgs;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SacADos {
 	private final float poidsMaximal;
-	private ArrayList<Objet> objets = new ArrayList<>();
+	private List<Objet> objets = new ArrayList<>();
 
 	public SacADos(float maxWeight) {
 		poidsMaximal = maxWeight;
@@ -27,7 +30,7 @@ public class SacADos {
 
 	public String toString() {
 		StringBuilder out = new StringBuilder();
-		out.append(String.format("%3s ; %6s ; %6s ; %-20s; %-8s ;\n", "[?]", "Valeur", "Poids", "Nom", "Ratio"));
+		out.append(String.format("%3s ; %6s ; %6s ; %-20s; %-8s ;%n", Msgs.CHECKED_TITLE, Msgs.WEIGHT, Msgs.VALUE, Msgs.NAME, Msgs.RATIO));
 		float totalWeight = 0;
 		float totalValue = 0;
 
@@ -41,9 +44,9 @@ public class SacADos {
 			}
 		}
 		out.append(String.format(
-				"poids du sac  : %.2f/%.2fkg (%s) \nvaleur du sac : %.2f \n",
+				Msgs.BAG_WEIGHT+" : %.2f/%.2f"+Msgs.WGHT_UNIT+" (%s) %n"+Msgs.BAG_VALUE+" : %.2f %n",
 				totalWeight, this.poidsMaximal,
-				totalWeight > this.poidsMaximal ? "Dépassement !" : "ok",
+				totalWeight > this.poidsMaximal ? Msgs.FULL : Msgs.OK,
 				totalValue
 		));
 		return out.toString();
