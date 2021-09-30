@@ -1,8 +1,11 @@
 package sac;
 
+import appli.Msgs;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Objet {
@@ -12,7 +15,7 @@ public class Objet {
 	private boolean isInTheBag;
 	private float ratio;
 
-	public static ArrayList<Objet> loadObjectsFromFile(String chemin) throws FileNotFoundException {
+	public static List<Objet> loadObjectsFromFile(String chemin) throws FileNotFoundException {
 		Scanner sc= new Scanner(new File(chemin));
 		ArrayList<Objet> retval = new ArrayList<>();
 		while (sc.hasNext()) {
@@ -26,6 +29,7 @@ public class Objet {
 			Objet object = new Objet(objectName, objectValue, objectWeight);
 			retval.add(object);
 		}
+		sc.close();
 		return retval;
 	}
 
@@ -38,8 +42,8 @@ public class Objet {
 	}
 
 	public String toString() {
-		return String.format("%s ; %6.2f ; %6.2f ; %-20s; %.6f ;\n",
-				this.isInTheBag ? "[x]" : "[ ]" ,
+		return String.format("%s ; %6.2f ; %6.2f ; %-20s; %.6f ;%n",
+				this.isInTheBag ? Msgs.CHECKED : Msgs.UNCHECKED ,
 				this.value, this.weight, this.name, this.ratio );
 	}
 
