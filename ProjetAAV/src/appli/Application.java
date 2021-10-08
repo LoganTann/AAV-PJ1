@@ -1,4 +1,5 @@
 package appli;
+import tree.BinaryTree;
 import sac.*;
 
 import java.io.FileNotFoundException;
@@ -8,6 +9,7 @@ public class Application {
 	private static final String GLOUTON = "glouton";
 	private static final String DYNAMIQUE = "dynamique";
 	private static final String PSE = "pse";
+	private static final String CAT_TITLE_FSTR = "%n%s --%n";
 
 	public static void main(String[] args) {
 		final String FILE_PATH = "wikipedia.txt";
@@ -22,15 +24,18 @@ public class Application {
 		}
 
 
-		System.out.printf("%n%s --%n", GLOUTON);
+		System.out.printf(CAT_TITLE_FSTR, GLOUTON);
 		System.out.println(proceed(GLOUTON, objects, MAX_WEIGHT));
 
-		System.out.printf("%n%s --%n", DYNAMIQUE);
+		System.out.printf(CAT_TITLE_FSTR, DYNAMIQUE);
 		System.out.println(proceed(DYNAMIQUE, objects, MAX_WEIGHT));
 
+		System.out.printf(CAT_TITLE_FSTR, PSE);
+		System.out.println(proceed(PSE, objects, MAX_WEIGHT));
 	}
 
-	private static SacADos proceed(String algorithm, List<Objet> objects, float maxWeight) {
+	// todo : String -> sac à dos pour PSE
+	private static String proceed(String algorithm, List<Objet> objects, float maxWeight) {
 		SacADos bag = new SacADos(maxWeight);
 		switch (algorithm) {
 			case GLOUTON:
@@ -40,10 +45,12 @@ public class Application {
 				algos.Dynamique.algoDynamique(bag, objects);
 				break;
 			case PSE:
-				throw new IllegalArgumentException("(temporaire) PSE non implémenté");
+				BinaryTree t = new BinaryTree();
+				t.generate(0);
+				return t.toString();
 			default:
 				throw new IllegalArgumentException(Msgs.WRONG_ALGORITHM);
 		}
-		return bag;
+		return bag.toString();
 	}
 }
