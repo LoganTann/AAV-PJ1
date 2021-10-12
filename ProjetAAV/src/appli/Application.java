@@ -45,7 +45,7 @@ public class Application {
 				algos.Dynamique.algoDynamique(bag, objects);
 				break;
 			case PSE:
-				BinaryTree t = new BinaryTree();
+				BinaryTree t = new BinaryTree(objects, true);
 				t.generate(0);
 				return t.toString();
 			default:
