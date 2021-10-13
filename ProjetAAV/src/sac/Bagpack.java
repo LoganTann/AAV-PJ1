@@ -8,7 +8,7 @@ import java.util.List;
 
 public class SacADos {
 	private final float poidsMaximal;
-	private List<Objet> objets = new ArrayList<>();
+	private List<Item> items = new ArrayList<>();
 
 	public SacADos(float maxWeight) {
 		poidsMaximal = maxWeight;
@@ -16,17 +16,17 @@ public class SacADos {
 
 	public SacADos(String chemin, float poidsMaximal) throws FileNotFoundException {
 		this.poidsMaximal = poidsMaximal;
-		this.objets = Objet.loadObjectsFromFile(chemin);
+		this.items = Item.loadObjectsFromFile(chemin);
 	}
 
 	public float getMaxWeight() { return poidsMaximal; }
 
-	public void add(Objet object){
+	public void add(Item object){
 		object.setIsInTheBag();
-		this.objets.add(object);
+		this.items.add(object);
 	}
 
-	public Objet getObjet(int i) { return objets.get(i); }
+	public Item getObjet(int i) { return items.get(i); }
 
 	public String toString() {
 		StringBuilder out = new StringBuilder();
@@ -35,12 +35,12 @@ public class SacADos {
 		float totalValue = 0;
 
 		// Affichage de chaque objet
-		for (Objet objet: this.objets) {
-			out.append(objet.toString());
+		for (Item item : this.items) {
+			out.append(item.toString());
 			// compte la valeur et le poids du sac
-			if (objet.isInTheBag()) {
-				totalValue += objet.getValue();
-				totalWeight += objet.getWeight();
+			if (item.isInTheBag()) {
+				totalValue += item.getValue();
+				totalWeight += item.getWeight();
 			}
 		}
 		out.append(String.format(
