@@ -1,119 +1,81 @@
 package tree;
 
 import sac.Objet;
-import sac.SacADos;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class BinaryTree {
-    //public static final double NB_OBJECTS; // todo : mettre à jour selon le poids actuel du sac
-    //private final ArrayList<Float> values;
-    private static List<Objet> allObjects = new ArrayList<>();;
-    private final List<Objet> objectsInNode;
+    // stocke momentanément tous les objets à ajouter :
+    // sert à éviter son passage par paramètres pour la génération des sous-arbres.
+    private static final List<Objet> allObjects = new ArrayList<>();
+
+    private final List<Objet> objectsInNode = new ArrayList<>();
     private BinaryTree leftTree;
     private BinaryTree rightTree;
 
-    // Ajouter le parent sera probablement nécessaire
+    // Ajouter le parent sera probablement nécessaire par la suite
 
-    public BinaryTree(){
-        // todo : déterminer la liste selon le parent
-        // this.values = new ArrayList<>();
-        this.objectsInNode = new ArrayList<>();
-    }
-
-    /*
-    public BinaryTree(List<Float> values) {
-        this();
-        // crée une copie des valeurs
-        this.values.addAll(values);
-    }*/
-
-    public BinaryTree(List<Objet> objects, boolean root) {
-        this();
-        if(!root) {
+    public BinaryTree(List<Objet> objects) {
+        // si allObjects est vide, dans notre cas d'utilisation, on est certain qu'on
+        // initialise la racine de l'arbre
+        if (allObjects.isEmpty()) {
+            allObjects.addAll(objects);
+        } else {
             this.objectsInNode.addAll(objects);
         }
-        else {
-            this.allObjects = objects;
-            this.generate(0);
-        }
     }
 
-    /*
-    public void add(float value){
-        this.values.add(value);
-    }*/
 
     /**
      * Permet de générer la structure de l'arbre
      * @param depth profondeur actuelle de l'arbre, relatif à la liste d'objets à traiter dans l'algo
      */
-    /*
-    public void generate(int depth) {
-        if (depth < 0 || depth >= nbObjects) {
-            return;
-        }
-        leftTree = new BinaryTree(this.values);
-        rightTree = new BinaryTree(this.values);
-        leftTree.add(depth);
-        rightTree.generate(depth+1);
-        leftTree.generate(depth+1);
-    }*/
-
     public void generate(int depth) {
         final double NB_OBJECTS = allObjects.size();
         if (depth < 0 || depth >= NB_OBJECTS) {
             return;
         }
-        leftTree = new BinaryTree(this.objectsInNode, false);
-        rightTree = new BinaryTree(this.objectsInNode, false);
-        leftTree.objectsInNode.add(this.allObjects.get(depth));
+        leftTree = new BinaryTree(this.objectsInNode);
+        rightTree = new BinaryTree(this.objectsInNode);
+        leftTree.objectsInNode.add(allObjects.get(depth));
         rightTree.generate(depth+1);
         leftTree.generate(depth+1);
     }
 
     /**
+     * (à des fins de test uniquement, ne pas noter !)
      * Retourne une représentation de l'arbre sous forme de String
      * Coller le résultat sur http://mshang.ca/syntree/ pour prévisualiser.
      * @return Une représentation de l'arbre utilisant la notation labellée entre crochets
      */
-
     public String toString() {
         StringBuilder buffer = new StringBuilder();
         this.createString(buffer);
         return buffer.toString();
     }
-    /*
-    private void createString(StringBuilder buffer) {
-        buffer.append("[");
-        buffer.append(
-                this.values.toString()
-                        .replace('[', '{').replace("]", "} ").replace(" ", "")
-        );
-        if (leftTree != null) {
-            this.leftTree.createString(buffer);
-        }
-        if (rightTree != null) {
-            this.rightTree.createString(buffer);
-        }
-        buffer.append("]");
-    }
-*/
 
+    /**
+     * (à des fins de test uniquement, ne pas noter !)
+     * @param buffer une stringbuilder sur lequel sera ajouté ce qui sera affiché sur l'écran
+     */
     private void createString(StringBuilder buffer) {
-        buffer.append("[");
-        if(!objectsInNode.isEmpty()){
-            for(int i=0; i < objectsInNode.size(); i++) {
-                buffer.append(i==0?"{":"");
-                buffer.append(objectsInNode.get(i).getValue());
-                buffer.append(i!=(objectsInNode.size()-1)?",":"}");
+        // affichage des éléments de ce tableau
+        buffer.append("[{");
+        if (!objectsInNode.isEmpty()){
+            Iterator<Objet> it = objectsInNode.iterator();
+            while (true) {
+                buffer.append(it.next().getValue());
+                if (it.hasNext()) {
+                    buffer.append(",");
+                } else {
+                    break;
+                }
             }
         }
-        else {
-            buffer.append("{}");
-        }
-
+        buffer.append("} ");
+        // affichage des arbes gauche et droite
         if (leftTree != null) {
             this.leftTree.createString(buffer);
         }
@@ -122,6 +84,4 @@ public class BinaryTree {
         }
         buffer.append("]");
     }
-
-
 }

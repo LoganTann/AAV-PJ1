@@ -29,6 +29,5 @@ public class PSE {
 
     public static void algoPSE(SacADos bag, List<Objet> objects, BinaryTree t) {
 
-
     }
 }
