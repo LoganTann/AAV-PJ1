@@ -7,15 +7,21 @@ import java.util.Iterator;
 import java.util.List;
 
 public class PseTree {
-    // stocke momentanément tous les objets à ajouter :
-    // sert à éviter son passage par paramètres pour la génération des sous-arbres.
+    /**
+     * Stocke momentanément tous les objets possibles à ajouter
+     * sert à éviter son passage par paramètres pour la génération des sous-arbres.
+     */
     private static final List<Item> allObjects = new ArrayList<>();
+    public static float maxWeight;
 
-    private final List<Item> objectsInNode = new ArrayList<>();
     private PseTree leftTree;
     private PseTree rightTree;
+    private PseTree parentTree;
 
-    // Ajouter le parent sera probablement nécessaire par la suite
+    /**
+     * Feuille de l'arbre
+     */
+    private final List<Item> objectsInNode = new ArrayList<>();
 
     public PseTree(List<Item> objects) {
         // si allObjects est vide, dans notre cas d'utilisation, on est certain qu'on
@@ -26,7 +32,12 @@ public class PseTree {
             this.objectsInNode.addAll(objects);
         }
     }
+    public PseTree(List<Item> objects, PseTree parent) {
+        this(objects);
+        this.parentTree = parent;
+    }
 
+    // DEBUG FUNCTIONS ------------------------------------------------------------------------------
 
     /**
      * Permet de générer la structure de l'arbre
@@ -37,11 +48,22 @@ public class PseTree {
         if (depth < 0 || depth >= NB_OBJECTS) {
             return;
         }
-        leftTree = new PseTree(this.objectsInNode);
-        rightTree = new PseTree(this.objectsInNode);
+        if (this.computeLeafWeight() >= maxWeight) {
+
+        }
+        leftTree = new PseTree(this.objectsInNode, this);
         leftTree.objectsInNode.add(allObjects.get(depth));
-        rightTree.generate(depth+1);
         leftTree.generate(depth+1);
+        rightTree = new PseTree(this.objectsInNode, this);
+        rightTree.generate(depth+1);
+    }
+
+    private float computeLeafWeight() {
+        float retval = 0;
+        for (Item elem : this.objectsInNode ) {
+            retval += elem.getWeight();
+        }
+        return retval;
     }
 
     /**
