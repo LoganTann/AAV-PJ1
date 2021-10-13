@@ -9,8 +9,8 @@ import java.util.List;
 
 import static java.lang.Float.max;
 
-public class Dynamique {
-    private Dynamique() {
+public class Dynamic {
+    private Dynamic() {
         throw new IllegalStateException(Msgs.STATIC_CLASS);
     }
     /**

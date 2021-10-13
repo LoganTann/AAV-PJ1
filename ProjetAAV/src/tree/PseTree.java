@@ -1,23 +1,23 @@
 package tree;
 
-import sac.Objet;
+import sac.Item;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class BinaryTree {
+public class PseTree {
     // stocke momentanément tous les objets à ajouter :
     // sert à éviter son passage par paramètres pour la génération des sous-arbres.
-    private static final List<Objet> allObjects = new ArrayList<>();
+    private static final List<Item> allObjects = new ArrayList<>();
 
-    private final List<Objet> objectsInNode = new ArrayList<>();
-    private BinaryTree leftTree;
-    private BinaryTree rightTree;
+    private final List<Item> objectsInNode = new ArrayList<>();
+    private PseTree leftTree;
+    private PseTree rightTree;
 
     // Ajouter le parent sera probablement nécessaire par la suite
 
-    public BinaryTree(List<Objet> objects) {
+    public PseTree(List<Item> objects) {
         // si allObjects est vide, dans notre cas d'utilisation, on est certain qu'on
         // initialise la racine de l'arbre
         if (allObjects.isEmpty()) {
@@ -37,8 +37,8 @@ public class BinaryTree {
         if (depth < 0 || depth >= NB_OBJECTS) {
             return;
         }
-        leftTree = new BinaryTree(this.objectsInNode);
-        rightTree = new BinaryTree(this.objectsInNode);
+        leftTree = new PseTree(this.objectsInNode);
+        rightTree = new PseTree(this.objectsInNode);
         leftTree.objectsInNode.add(allObjects.get(depth));
         rightTree.generate(depth+1);
         leftTree.generate(depth+1);
@@ -64,7 +64,7 @@ public class BinaryTree {
         // affichage des éléments de ce tableau
         buffer.append("[{");
         if (!objectsInNode.isEmpty()){
-            Iterator<Objet> it = objectsInNode.iterator();
+            Iterator<Item> it = objectsInNode.iterator();
             while (true) {
                 buffer.append(it.next().getValue());
                 if (it.hasNext()) {

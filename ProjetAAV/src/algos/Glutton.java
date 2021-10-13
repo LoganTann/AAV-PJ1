@@ -5,8 +5,8 @@ import sac.*;
 import java.util.Comparator;
 import java.util.List;
 
-public class Glouton {
-    private Glouton() {
+public class Glutton {
+    private Glutton() {
         throw new IllegalStateException(Msgs.STATIC_CLASS);
     }
 

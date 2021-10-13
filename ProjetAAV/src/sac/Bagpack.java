@@ -6,15 +6,15 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SacADos {
+public class Bagpack {
 	private final float poidsMaximal;
 	private List<Item> items = new ArrayList<>();
 
-	public SacADos(float maxWeight) {
+	public Bagpack(float maxWeight) {
 		poidsMaximal = maxWeight;
 	}
 
-	public SacADos(String chemin, float poidsMaximal) throws FileNotFoundException {
+	public Bagpack(String chemin, float poidsMaximal) throws FileNotFoundException {
 		this.poidsMaximal = poidsMaximal;
 		this.items = Item.loadObjectsFromFile(chemin);
 	}

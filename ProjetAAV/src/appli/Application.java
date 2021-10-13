@@ -1,5 +1,7 @@
 package appli;
-import tree.BinaryTree;
+import algos.Dynamic;
+import algos.Glutton;
+import tree.PseTree;
 import sac.*;
 
 import java.io.FileNotFoundException;
@@ -15,9 +17,9 @@ public class Application {
 		final String FILE_PATH = "wikipedia.txt";
 		final float MAX_WEIGHT = 15;
 
-		List<Objet> objects;
+		List<Item> objects;
 		try {
-			objects = Objet.loadObjectsFromFile(FILE_PATH);
+			objects = Item.loadObjectsFromFile(FILE_PATH);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return;
@@ -35,17 +37,17 @@ public class Application {
 	}
 
 	// todo : String -> sac à dos pour PSE
-	private static String proceed(String algorithm, List<Objet> objects, float maxWeight) {
-		SacADos bag = new SacADos(maxWeight);
+	private static String proceed(String algorithm, List<Item> objects, float maxWeight) {
+		Bagpack bag = new Bagpack(maxWeight);
 		switch (algorithm) {
 			case GLOUTON:
-				algos.Glouton.algoGlouton(bag, objects);
+				Glutton.algoGlouton(bag, objects);
 				break;
 			case DYNAMIQUE:
-				algos.Dynamique.algoDynamique(bag, objects);
+				Dynamic.algoDynamique(bag, objects);
 				break;
 			case PSE:
-				BinaryTree t = new BinaryTree(objects);
+				PseTree t = new PseTree(objects);
 				t.generate(0);
 				return t.toString();
 			default:
