@@ -50,7 +50,8 @@ public class Application {
 				PseTree.setMaxWeight(maxWeight);
 				PseTree t = new PseTree(objects);
 				t.generate(0);
-				return t.toString();
+				System.out.println(t.toString());
+				return t.getBestCombination().toString();
 			default:
 				throw new IllegalArgumentException(Msgs.WRONG_ALGORITHM);
 		}

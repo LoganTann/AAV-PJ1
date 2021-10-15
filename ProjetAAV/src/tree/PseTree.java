@@ -16,10 +16,9 @@ public class PseTree {
 
     private PseTree leftTree;
     private PseTree rightTree;
-    private PseTree parentTree;
 
     /**
-     * Feuille de l'arbre
+     * Noeuds de l'arbre
      */
     private final List<Item> objectsInNode = new ArrayList<>();
 
@@ -32,16 +31,15 @@ public class PseTree {
             this.objectsInNode.addAll(objects);
         }
     }
-    public PseTree(List<Item> objects, PseTree parent) {
-        this(objects);
-        this.parentTree = parent;
-    }
 
     public static void setMaxWeight(float mw) {
         maxWeight = mw;
     }
 
     // DEBUG FUNCTIONS ------------------------------------------------------------------------------
+
+    private static float bestValue = 0;
+    private static final List<Item> bestCombination = new ArrayList<>();
 
     /**
      * Permet de générer la structure de l'arbre
@@ -53,17 +51,37 @@ public class PseTree {
             return;
         }
 
-        rightTree = new PseTree(this.objectsInNode, this);
+        rightTree = new PseTree(this.objectsInNode);
         rightTree.generate(depth+1);
+
         Item nextItem = allObjects.get(depth);
-        if (this.computeLeafWeight() + nextItem.getWeight() >= maxWeight) {
+        float poidsSuivant = this.computeLeafWeight() + nextItem.getWeight();
+        if (poidsSuivant >= maxWeight) {
             return;
         }
-        leftTree = new PseTree(this.objectsInNode, this);
+        /* on veut la valeur future du sac */
+        if (depth + 1 >= allObjects.size() && computeNodeValue() + nextItem.getValue() > bestValue) {
+                PseTree.bestValue = computeNodeValue() + nextItem.getValue();
+                bestCombination.clear();
+                bestCombination.addAll(this.objectsInNode);
+                bestCombination.add(nextItem);
+        }
+        leftTree = new PseTree(this.objectsInNode);
         leftTree.objectsInNode.add(nextItem);
         leftTree.generate(depth+1);
     }
 
+    public List<Item> getBestCombination() {
+        return bestCombination;
+    }
+
+    private float computeNodeValue() {
+        float sum = 0;
+        for (Item elem : this.objectsInNode ) {
+            sum += elem.getValue();
+        }
+        return sum;
+    }
     private float computeLeafWeight() {
         float sum = 0;
         for (Item elem : this.objectsInNode ) {
