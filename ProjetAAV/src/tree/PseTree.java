@@ -12,7 +12,7 @@ public class PseTree {
      * sert à éviter son passage par paramètres pour la génération des sous-arbres.
      */
     private static final List<Item> allObjects = new ArrayList<>();
-    public static float maxWeight;
+    private static float maxWeight;
 
     private PseTree leftTree;
     private PseTree rightTree;
@@ -37,6 +37,10 @@ public class PseTree {
         this.parentTree = parent;
     }
 
+    public static void setMaxWeight(float mw) {
+        maxWeight = mw;
+    }
+
     // DEBUG FUNCTIONS ------------------------------------------------------------------------------
 
     /**
@@ -48,29 +52,31 @@ public class PseTree {
         if (depth < 0 || depth >= NB_OBJECTS) {
             return;
         }
-        if (this.computeLeafWeight() >= maxWeight) {
 
-        }
-        leftTree = new PseTree(this.objectsInNode, this);
-        leftTree.objectsInNode.add(allObjects.get(depth));
-        leftTree.generate(depth+1);
         rightTree = new PseTree(this.objectsInNode, this);
         rightTree.generate(depth+1);
+        Item nextItem = allObjects.get(depth);
+        if (this.computeLeafWeight() + nextItem.getWeight() >= maxWeight) {
+            return;
+        }
+        leftTree = new PseTree(this.objectsInNode, this);
+        leftTree.objectsInNode.add(nextItem);
+        leftTree.generate(depth+1);
     }
 
     private float computeLeafWeight() {
-        float retval = 0;
+        float sum = 0;
         for (Item elem : this.objectsInNode ) {
-            retval += elem.getWeight();
+            sum += elem.getWeight();
         }
-        return retval;
+        return sum;
     }
 
     /**
      * (à des fins de test uniquement, ne pas noter !)
      * Retourne une représentation de l'arbre sous forme de String
      * Coller le résultat sur http://mshang.ca/syntree/ pour prévisualiser.
-     * @return Une représentation de l'arbre utilisant la notation labellée entre crochets
+     * @return Une représentation de l'arbre utilisant la notation libellée entre crochets
      */
     public String toString() {
         StringBuilder buffer = new StringBuilder();
@@ -80,11 +86,11 @@ public class PseTree {
 
     /**
      * (à des fins de test uniquement, ne pas noter !)
-     * @param buffer une stringbuilder sur lequel sera ajouté ce qui sera affiché sur l'écran
+     * @param buffer une StringBuilder sur lequel sera ajouté ce qui sera affiché sur l'écran
      */
     private void createString(StringBuilder buffer) {
         // affichage des éléments de ce tableau
-        buffer.append("[{");
+        buffer.append("[{prices=");
         if (!objectsInNode.isEmpty()){
             Iterator<Item> it = objectsInNode.iterator();
             while (true) {
@@ -96,8 +102,9 @@ public class PseTree {
                 }
             }
         }
+        buffer.append("|leafWeight=").append(this.computeLeafWeight());
         buffer.append("} ");
-        // affichage des arbes gauche et droite
+        // affichage des arbres gauche et droite
         if (leftTree != null) {
             this.leftTree.createString(buffer);
         }

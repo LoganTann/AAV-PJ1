@@ -47,7 +47,7 @@ public class Application {
 				Dynamic.algoDynamique(bag, objects);
 				break;
 			case PSE:
-				PseTree.maxWeight = maxWeight;
+				PseTree.setMaxWeight(maxWeight);
 				PseTree t = new PseTree(objects);
 				t.generate(0);
 				return t.toString();
