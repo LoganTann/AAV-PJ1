@@ -49,7 +49,7 @@ public class Application {
 			case PSE:
 				PseTree.setMaxWeight(maxWeight);
 				PseTree t = new PseTree(objects);
-				t.generate(0);
+				t.generate();
 				System.out.println(t.toString());
 				return t.getBestCombination().toString();
 			default:
