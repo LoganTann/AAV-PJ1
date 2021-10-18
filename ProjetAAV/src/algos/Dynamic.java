@@ -2,15 +2,15 @@ package algos;
 
 import appli.Msgs;
 import appli.Utils;
-import sac.Objet;
-import sac.SacADos;
+import sac.Item;
+import sac.Bagpack;
 
 import java.util.List;
 
 import static java.lang.Float.max;
 
-public class Dynamique {
-    private Dynamique() {
+public class Dynamic {
+    private Dynamic() {
         throw new IllegalStateException(Msgs.STATIC_CLASS);
     }
     /**
@@ -19,7 +19,7 @@ public class Dynamique {
      * @param bag le sac à dos final
      * @param objects la liste des objets potentiels à mettre dans le sac
      */
-    public static void algoDynamique(SacADos bag, List<Objet> objects) {
+    public static void algoDynamique(Bagpack bag, List<Item> objects) {
         if (objects.isEmpty()) throw new IllegalArgumentException(Msgs.OBJ_LIST_EMPTY);
         // Initialisation de la matrice de combinaisons:
         // ligne = objets (1-9), col = poids max possibles (0-30), val = prix du sac
@@ -28,14 +28,14 @@ public class Dynamique {
         int col = 0, row = 0;
 
         // Initialisation de la première ligne
-        Objet firstObj = objects.get(row);
+        Item firstObj = objects.get(row);
         for (; col < col_num; col++) {
             mixture[row][col] = (firstObj.getWeight() > col) ? 0 : firstObj.getValue();
         }
 
         // Remplissage des autres lignes
         for (row = 1; row < row_num; row++) {
-            Objet rowObj = objects.get(row);
+            Item rowObj = objects.get(row);
             for (col = 0; col < col_num; col++) {
                 if (rowObj.getWeight() <= col) {
                     mixture[row][col] = max(
@@ -69,7 +69,7 @@ public class Dynamique {
      * @param combinaisons combinaisons dynamiques poids/valeur traitées par l'algorithme
      * @param objects liste des objets potentiels à ajouter dans le sac
      */
-    private static void print_debug(float[][] combinaisons, List<Objet> objects) {
+    private static void print_debug(float[][] combinaisons, List<Item> objects) {
         System.out.println("# début du verbose dynamique 1 --");
         System.out.printf("# %18s%s%n", "poids total sac ", Utils.generateRangeString(0, combinaisons[0].length));
         System.out.printf("# %18s%s%n", "objets ajoutés ", "[ valeur totale en fonction du poids total ci-dessus ]");

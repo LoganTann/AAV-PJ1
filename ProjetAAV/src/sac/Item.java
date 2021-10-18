@@ -8,16 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Objet {
+public class Item {
 	private final String name;
 	private final float value, weight;
 
 	private boolean isInTheBag;
 	private float ratio;
 
-	public static List<Objet> loadObjectsFromFile(String chemin) throws FileNotFoundException {
+	public static List<Item> loadObjectsFromFile(String chemin) throws FileNotFoundException {
 		Scanner sc= new Scanner(new File(chemin));
-		ArrayList<Objet> retval = new ArrayList<>();
+		ArrayList<Item> retval = new ArrayList<>();
 		while (sc.hasNext()) {
 			String line = sc.nextLine();
 			String[] parsed = line.split(";");
@@ -26,14 +26,14 @@ public class Objet {
 			float objectWeight = Float.parseFloat(parsed[1]);
 			float objectValue = Float.parseFloat(parsed[2]);
 			// attention ne pas confondre poids (weight) et valeur (value) !
-			Objet object = new Objet(objectName, objectValue, objectWeight);
+			Item object = new Item(objectName, objectValue, objectWeight);
 			retval.add(object);
 		}
 		sc.close();
 		return retval;
 	}
 
-	public Objet(String nom, float valeur, float poids) {
+	public Item(String nom, float valeur, float poids) {
 		this.name = nom;
 		this.value = valeur;
 		this.weight = poids;

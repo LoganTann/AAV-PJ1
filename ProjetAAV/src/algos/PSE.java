@@ -1,11 +1,15 @@
 package algos;
 
-import sac.Objet;
-import sac.SacADos;
-import tree.BinaryTree;
+import sac.Item;
+import sac.Bagpack;
+import tree.PseTree;
 
 import java.util.List;
 
+/**
+ * Algorithme PSE.
+ * C'est le seul qu'on a pas traduit en anglais car sinon ça serait une galère pour comprendre
+ */
 public class PSE {
     // INF_MARK => solution avec l'algo glouton
     // maxInBag => change a chaque noeud si sup a precedent max
@@ -27,7 +31,7 @@ public class PSE {
             return maxInBag;
     */
 
-    public static void algoPSE(SacADos bag, List<Objet> objects, BinaryTree t) {
+    public static void algoPSE(Bagpack bag, List<Item> objects, PseTree t) {
 
     }
 }
