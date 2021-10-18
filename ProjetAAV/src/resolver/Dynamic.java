@@ -1,4 +1,4 @@
-package algos;
+package resolver;
 
 import appli.Msgs;
 import appli.Utils;

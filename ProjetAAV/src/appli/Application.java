@@ -1,6 +1,6 @@
 package appli;
-import algos.Dynamic;
-import algos.Glutton;
+import resolver.Dynamic;
+import resolver.Glutton;
 import tree.PseTree;
 import sac.*;
 
