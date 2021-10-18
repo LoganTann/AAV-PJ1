@@ -1,6 +1,8 @@
 package appli;
 import resolver.Dynamic;
 import resolver.Glutton;
+import resolver.Pse;
+import resolver.ResolverInterface;
 import tree.PseTree;
 import sac.*;
 
@@ -25,7 +27,6 @@ public class Application {
 			return;
 		}
 
-
 		System.out.printf(CAT_TITLE_FSTR, GLOUTON);
 		System.out.println(proceed(GLOUTON, objects, MAX_WEIGHT));
 
@@ -36,25 +37,22 @@ public class Application {
 		System.out.println(proceed(PSE, objects, MAX_WEIGHT));
 	}
 
-	// todo : String -> sac à dos pour PSE
 	private static String proceed(String algorithm, List<Item> objects, float maxWeight) {
 		Bagpack bag = new Bagpack(maxWeight);
+		getResolverInstance(algorithm).solveProblem(bag, objects);
+		return bag.toString();
+	}
+
+	private static ResolverInterface getResolverInstance(String algorithm) {
 		switch (algorithm) {
 			case GLOUTON:
-				Glutton.algoGlouton(bag, objects);
-				break;
+				return new Glutton();
 			case DYNAMIQUE:
-				Dynamic.algoDynamique(bag, objects);
-				break;
+				return new Dynamic();
 			case PSE:
-				PseTree.setMaxWeight(maxWeight);
-				PseTree t = new PseTree(objects);
-				t.generate();
-				System.out.println(t.toString());
-				return t.getBestCombination().toString();
+				return new Pse();
 			default:
-				throw new IllegalArgumentException(Msgs.WRONG_ALGORITHM);
+			throw new IllegalArgumentException(Msgs.WRONG_ALGORITHM);
 		}
-		return bag.toString();
 	}
 }

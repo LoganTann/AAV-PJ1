@@ -5,12 +5,8 @@ import sac.*;
 import java.util.Comparator;
 import java.util.List;
 
-public class Glutton {
-    private Glutton() {
-        throw new IllegalStateException(Msgs.STATIC_CLASS);
-    }
-
-    public static void algoGlouton(Bagpack bag, List<Item> objects) {
+public class Glutton implements ResolverInterface {
+    public void solveProblem(Bagpack bag, List<Item> objects) {
         if (objects.isEmpty()) throw new IllegalArgumentException(Msgs.OBJ_LIST_EMPTY);
 
         // calcul de (vi/pi) pour chaque objet puis tri selon ce ratio
