@@ -46,6 +46,7 @@ public class PseTree {
      * Borne minimale : la meilleure valeur que nous avons retrouvé jusqu'à présent
      */
     private static float g_boundaryMin = 11;
+    private static float g_boundaryMinWeight = maxWeight;
 
     /**
      * Démarre l'algo PSE. Conçu pour être appelé seulement une fois
@@ -55,7 +56,7 @@ public class PseTree {
         for (Item it: g_allObjects) {
             sumOfObjectsValues += it.getValue();
         }
-        generate(0, 0, sumOfObjectsValues);
+        generate(0, 0, sumOfObjectsValues, 0);
     }
 
     /**
@@ -64,7 +65,7 @@ public class PseTree {
      * @param parentNodeWeight poids du noeud parent
      * @param parentBoundaryMax valeur actuelle du noeud parent + somme des valeurs des autres
      */
-    private void generate(int depth, float parentNodeWeight, float parentBoundaryMax) {
+    private void generate(int depth, float parentNodeWeight, float parentBoundaryMax, float parentNodeValue) {
         if (depth < 0 || depth >= g_allObjects.size()) {
             return;
         }
@@ -77,20 +78,17 @@ public class PseTree {
         if (leftTreeWeight <= maxWeight) {
             leftTree = new PseTree(this.objectsInNode);
             leftTree.objectsInNode.add(nextItem);
-
-            if (g_boundaryMin)
-
-            leftTree.generate(depth+1, leftTreeWeight, parentBoundaryMax);
-        }
-        // ▲ si l'ajout de l'objet provoque l'explosion du sac on coupe la branche gauche
-
-        /* on veut la valeur future du sac
-        if (depth + 1 >= g_allObjects.size() && computeNodeValue() + nextItem.getValue() > bestValue) {
-                PseTree.bestValue = computeNodeValue() + nextItem.getValue();
+            float leftTreeValue = parentNodeValue + nextItem.getValue();
+            if (leftTreeValue >= g_boundaryMin && leftTreeWeight > g_boundaryMinWeight) {
+                g_boundaryMin = leftTreeValue;
+                g_boundaryMinWeight = leftTreeWeight;
                 bestCombination.clear();
                 bestCombination.addAll(this.objectsInNode);
                 bestCombination.add(nextItem);
-        }*/
+            }
+            leftTree.generate(depth+1, leftTreeWeight, parentBoundaryMax, leftTreeValue);
+        }
+        // ▲ si l'ajout de l'objet provoque l'explosion du sac on coupe la branche gauche
 
         /*
          * currentBoundaryMax : borne max actuelle.
@@ -101,26 +99,19 @@ public class PseTree {
          */
         if (currentBoundaryMax >= g_boundaryMin) {
             rightTree = new PseTree(this.objectsInNode);
-            rightTree.generate(depth+1, parentNodeWeight, currentBoundaryMax);
-        } else {
-            System.out.printf("parentBMax = %f - nextItemValue = %f %n", parentBoundaryMax, nextItem.getValue());
+            rightTree.generate(depth + 1, parentNodeWeight, currentBoundaryMax, parentNodeValue);
         }
         // ▲ si la borne max est inférieure à la borne min on coupe la branche droite
         // sinon: On génère l'arbre droite, qui est identique, mais avec une borne max plus petite
-
     }
 
     public List<Item> getBestCombination() {
         return bestCombination;
     }
 
-    private float computeNodeValue() {
-        float sum = 0;
-        for (Item elem : this.objectsInNode ) {
-            sum += elem.getValue();
-        }
-        return sum;
-    }
+    /**
+     * à des fins de tests uniquement
+     */
     private float computeLeafWeight() {
         float sum = 0;
         for (Item elem : this.objectsInNode ) {
