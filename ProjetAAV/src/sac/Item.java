@@ -44,7 +44,7 @@ public class Item {
 	public String toString() {
 		return String.format("%s ; %6.2f ; %6.2f ; %-20s; %.6f ;%n",
 				this.isInTheBag ? Msgs.CHECKED : Msgs.UNCHECKED ,
-				this.value, this.weight, this.name, this.ratio );
+				this.weight, this.value, this.name, this.ratio );
 	}
 
 	public String getName() {
