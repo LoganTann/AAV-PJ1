@@ -28,12 +28,14 @@ public class Msgs {
     public static final String INDENT_1 = " %s%n";
     public static final String INDENT_TAB = "\t%s%n";
     public static void printHelp() {
-        System.out.printf("resoudre-sac-a-dos [chemin] [poids-maximal] [glouton | dynamique | pse]%n%n");
+        System.out.printf("resoudre-sac-a-dos [chemin] [poids-maximal] [glouton | dynamique | pse] [-v]%n%n");
         System.out.printf(INDENT_1, "chemin:");
         System.out.printf(INDENT_TAB, "Le chemin d’un fichier csv contentant le nom d'un objet, son poids et sa valeur");
         System.out.printf(INDENT_1, "poids-maximal:");
         System.out.printf(INDENT_TAB, "Un nombre réel indiquant le poids maximal du sac à dos");
         System.out.printf(INDENT_1, "methode:");
         System.out.printf(INDENT_TAB, "Définis la méthode de résolution de l'algorithme, parmi glouton, dynnamique ou pse");
+        System.out.printf(INDENT_1, "-v (optionnel):");
+        System.out.printf(INDENT_TAB, "Active le mode verbose (génère l'affichage des étapes)");
     }
 }

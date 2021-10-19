@@ -15,16 +15,18 @@ public class Utils {
      * Active le mode verbose (pour débogage uniquement !)
      * @see #isVerbose()
      */
-    private static final boolean IS_VERBOSE = true;
+    private static boolean isVerbose = false;
 
-
+    public static void activateVerbose() {
+        isVerbose = true;
+    }
     /**
      * Indique si le mode verbose est activé. Cela fait des affichages de débuggage supplémentaire.
      * <b>Doit être en false lors de la recette de production</b>
      * @return true si le mode verbose est activé.
      */
     public static boolean isVerbose() {
-        return IS_VERBOSE;
+        return isVerbose;
     }
 
     /**

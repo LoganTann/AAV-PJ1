@@ -18,6 +18,9 @@ public class Application {
 			Msgs.printHelp();
 			return;
 		}
+		if (args.length > 3 && args[3].contains("-v")) {
+			Utils.activateVerbose();
+		}
 
 		final String FILE_PATH = args[0];
 		final List<Item> objects;

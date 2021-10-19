@@ -32,11 +32,10 @@ public class Glutton implements ResolverInterface {
                 bag.add(object);
             }
         }
-        if (Utils.isVerbose()) {
-            print_debug(objects);
-        }
         if (usingForPse) {
             bag.reset();
+        } else if (Utils.isVerbose()) {
+            print_debug(objects);
         }
         return cumulWeight;
     }
