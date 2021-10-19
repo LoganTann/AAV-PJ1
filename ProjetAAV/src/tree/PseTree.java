@@ -1,134 +1,75 @@
 package tree;
 
-import sac.Item;
+import sac.BasicItem;
+import sac.BasicItemInterface;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+public class PseTree extends BinaryTree implements BinaryTreeInterface, BasicItemInterface {
+    // Les override de tree.BinaryTree --------------------------------
+    public PseTree() {
+        this.treeValue = new BasicItem(0, 0);
+    }
+    public PseTree(PseTree parent) {
+        this.parentTree = parent;
+        this.leftTree = null;
+    }
+    @Override
+    public PseTree getParent() {
+        return this.parentTree;
+    }
+    private BasicItemInterface treeValue;
+    PseTree leftTree;
+    PseTree rightTree;
+    PseTree parentTree;
 
-public class PseTree {
+    // Les override de sac.BasicItemInterface -------------------------
+    @Override
+    public void setWeight(float weight) { this.treeValue.setWeight(weight); }
+    @Override
+    public void setValue(float value) { this.treeValue.setValue(value);}
+    @Override
+    public float getWeight() { return this.treeValue.getWeight(); }
+    @Override
+    public float getValue() { return this.treeValue.getValue(); }
+    @Override
+    public BasicItemInterface copy() {
+        return this.treeValue.copy();
+    }
+    public BasicItemInterface copySum(float wght, float val) {
+        return BasicItem.copySum(this.treeValue, wght, val);
+    }
+
+    // Le code effectif -----------------------------------------------
+    private boolean isAtLeft;
+    public boolean isLeft() {
+        return isAtLeft;
+    }
     /**
-     * Stocke momentanément tous les objets possibles à ajouter
-     * sert à éviter son passage par paramètres pour la génération des sous-arbres.
+     * Génère la branche gauche (celle où on ajoute l'objet)
+     * @param treeValue référence vers le BasicItem que contiendra l'arbre
+     * @return le nouvel arbre généré
      */
-    private static final List<Item> allObjects = new ArrayList<>();
-    private static float maxWeight;
-
-    private PseTree leftTree;
-    private PseTree rightTree;
-
+    public PseTree generateLeftTree(BasicItemInterface treeValue) {
+        this.leftTree = new PseTree(this);
+        this.leftTree.treeValue = treeValue;
+        this.leftTree.isAtLeft = true;
+        return this.leftTree;
+    }
     /**
-     * Noeuds de l'arbre
+     * Génère la branche droite (celle où on n'ajoute aucun objet)
+     * @return le nouvel arbre généré
      */
-    private final List<Item> objectsInNode = new ArrayList<>();
-
-    public PseTree(List<Item> objects) {
-        // si allObjects est vide, dans notre cas d'utilisation, on est certain qu'on
-        // initialise la racine de l'arbre
-        if (allObjects.isEmpty()) {
-            allObjects.addAll(objects);
-        } else {
-            this.objectsInNode.addAll(objects);
-        }
+    public PseTree generateRightTree() {
+        this.rightTree = new PseTree(this);
+        // dans le use-case actuel, n'est pas censé être manipulé donc vraisemblablement safe :
+        this.rightTree.treeValue = this.treeValue;
+        this.rightTree.isAtLeft = false;
+        return this.rightTree;
     }
 
-    public static void setMaxWeight(float mw) {
-        maxWeight = mw;
+    public PseTree getLeftTree() {
+        return this.leftTree;
     }
-
-    // DEBUG FUNCTIONS ------------------------------------------------------------------------------
-
-    private static float bestValue = 0;
-    private static final List<Item> bestCombination = new ArrayList<>();
-
-    /**
-     * Permet de générer la structure de l'arbre
-     * @param depth profondeur actuelle de l'arbre, relatif à la liste d'objets à traiter dans l'algo
-     */
-    public void generate(int depth) {
-        final double NB_OBJECTS = allObjects.size();
-        if (depth < 0 || depth >= NB_OBJECTS) {
-            return;
-        }
-
-        rightTree = new PseTree(this.objectsInNode);
-        rightTree.generate(depth+1);
-
-        Item nextItem = allObjects.get(depth);
-        float poidsSuivant = this.computeLeafWeight() + nextItem.getWeight();
-        if (poidsSuivant >= maxWeight) {
-            return;
-        }
-        /* on veut la valeur future du sac */
-        if (depth + 1 >= allObjects.size() && computeNodeValue() + nextItem.getValue() > bestValue) {
-                PseTree.bestValue = computeNodeValue() + nextItem.getValue();
-                bestCombination.clear();
-                bestCombination.addAll(this.objectsInNode);
-                bestCombination.add(nextItem);
-        }
-        leftTree = new PseTree(this.objectsInNode);
-        leftTree.objectsInNode.add(nextItem);
-        leftTree.generate(depth+1);
-    }
-
-    public List<Item> getBestCombination() {
-        return bestCombination;
-    }
-
-    private float computeNodeValue() {
-        float sum = 0;
-        for (Item elem : this.objectsInNode ) {
-            sum += elem.getValue();
-        }
-        return sum;
-    }
-    private float computeLeafWeight() {
-        float sum = 0;
-        for (Item elem : this.objectsInNode ) {
-            sum += elem.getWeight();
-        }
-        return sum;
-    }
-
-    /**
-     * (à des fins de test uniquement, ne pas noter !)
-     * Retourne une représentation de l'arbre sous forme de String
-     * Coller le résultat sur http://mshang.ca/syntree/ pour prévisualiser.
-     * @return Une représentation de l'arbre utilisant la notation libellée entre crochets
-     */
-    public String toString() {
-        StringBuilder buffer = new StringBuilder();
-        this.createString(buffer);
-        return buffer.toString();
-    }
-
-    /**
-     * (à des fins de test uniquement, ne pas noter !)
-     * @param buffer une StringBuilder sur lequel sera ajouté ce qui sera affiché sur l'écran
-     */
-    private void createString(StringBuilder buffer) {
-        // affichage des éléments de ce tableau
-        buffer.append("[{prices=");
-        if (!objectsInNode.isEmpty()){
-            Iterator<Item> it = objectsInNode.iterator();
-            while (true) {
-                buffer.append(it.next().getValue());
-                if (it.hasNext()) {
-                    buffer.append(",");
-                } else {
-                    break;
-                }
-            }
-        }
-        buffer.append("|leafWeight=").append(this.computeLeafWeight());
-        buffer.append("} ");
-        // affichage des arbres gauche et droite
-        if (leftTree != null) {
-            this.leftTree.createString(buffer);
-        }
-        if (rightTree != null) {
-            this.rightTree.createString(buffer);
-        }
-        buffer.append("]");
+    public PseTree getRightTree() {
+        return this.rightTree;
     }
 }

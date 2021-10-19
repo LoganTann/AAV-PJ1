@@ -1,7 +1,8 @@
 package appli;
-import algos.Dynamic;
-import algos.Glutton;
-import tree.PseTree;
+import resolver.Dynamic;
+import resolver.Glutton;
+import resolver.Pse;
+import resolver.ResolverInterface;
 import sac.*;
 
 import java.io.FileNotFoundException;
@@ -11,13 +12,15 @@ public class Application {
 	private static final String GLOUTON = "glouton";
 	private static final String DYNAMIQUE = "dynamique";
 	private static final String PSE = "pse";
-	private static final String CAT_TITLE_FSTR = "%n%s --%n";
 
 	public static void main(String[] args) {
-		final String FILE_PATH = "wikipedia.txt";
-		final float MAX_WEIGHT = 15;
+		if (args.length < 3) {
+			Msgs.printHelp();
+			return;
+		}
 
-		List<Item> objects;
+		final String FILE_PATH = args[0];
+		final List<Item> objects;
 		try {
 			objects = Item.loadObjectsFromFile(FILE_PATH);
 		} catch (FileNotFoundException e) {
@@ -25,36 +28,31 @@ public class Application {
 			return;
 		}
 
+		final float maxWeight = Float.parseFloat(args[1]);
+		final String algo = args[2];
 
-		System.out.printf(CAT_TITLE_FSTR, GLOUTON);
-		System.out.println(proceed(GLOUTON, objects, MAX_WEIGHT));
-
-		System.out.printf(CAT_TITLE_FSTR, DYNAMIQUE);
-		System.out.println(proceed(DYNAMIQUE, objects, MAX_WEIGHT));
-
-		System.out.printf(CAT_TITLE_FSTR, PSE);
-		System.out.println(proceed(PSE, objects, MAX_WEIGHT));
+		Utils.Chrono.start();
+		System.out.println(proceed(algo, objects, maxWeight));
+		System.out.println(Utils.Chrono.stop());
 	}
 
-	// todo : String -> sac à dos pour PSE
 	private static String proceed(String algorithm, List<Item> objects, float maxWeight) {
 		Bagpack bag = new Bagpack(maxWeight);
+		getResolverInstance(algorithm)
+			.solveProblem(bag, objects);
+		return bag.toString();
+	}
+
+	private static ResolverInterface getResolverInstance(String algorithm) {
 		switch (algorithm) {
 			case GLOUTON:
-				Glutton.algoGlouton(bag, objects);
-				break;
+				return new Glutton();
 			case DYNAMIQUE:
-				Dynamic.algoDynamique(bag, objects);
-				break;
+				return new Dynamic();
 			case PSE:
-				PseTree.setMaxWeight(maxWeight);
-				PseTree t = new PseTree(objects);
-				t.generate(0);
-				System.out.println(t.toString());
-				return t.getBestCombination().toString();
+				return new Pse();
 			default:
-				throw new IllegalArgumentException(Msgs.WRONG_ALGORITHM);
+			throw new IllegalArgumentException(Msgs.WRONG_ALGORITHM);
 		}
-		return bag.toString();
 	}
 }

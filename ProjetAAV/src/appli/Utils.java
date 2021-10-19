@@ -86,4 +86,15 @@ public class Utils {
         }
         return floatArrayToString(farray);
     }
+
+    public static class Chrono {
+        private static long startTime;
+        public static void start() {
+            startTime = System.currentTimeMillis();
+        }
+        public static String stop() {
+            long endTime = System.currentTimeMillis();
+            return "Durée d'exécution : " + (endTime-startTime) + "ms";
+        }
+    }
 }

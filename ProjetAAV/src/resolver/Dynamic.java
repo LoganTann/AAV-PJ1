@@ -1,4 +1,4 @@
-package algos;
+package resolver;
 
 import appli.Msgs;
 import appli.Utils;
@@ -9,17 +9,12 @@ import java.util.List;
 
 import static java.lang.Float.max;
 
-public class Dynamic {
-    private Dynamic() {
-        throw new IllegalStateException(Msgs.STATIC_CLASS);
-    }
+public class Dynamic implements ResolverInterface{
     /**
      * Résouds le problème du sac à dos via la programmation dynamique.
      * Ref : le sujet et http://user.oc-static.com/pdf/95368-introduction-a-la-programmation-dynamique.pdf
-     * @param bag le sac à dos final
-     * @param objects la liste des objets potentiels à mettre dans le sac
      */
-    public static void algoDynamique(Bagpack bag, List<Item> objects) {
+    public void solveProblem(Bagpack bag, List<Item> objects) {
         if (objects.isEmpty()) throw new IllegalArgumentException(Msgs.OBJ_LIST_EMPTY);
         // Initialisation de la matrice de combinaisons:
         // ligne = objets (1-9), col = poids max possibles (0-30), val = prix du sac

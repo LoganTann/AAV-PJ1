@@ -1,6 +1,7 @@
 package appli;
 
 public class Msgs {
+
     /**
      * Une classe totalement overkill mais sympa si on veut traduire l'appli
      */
@@ -21,8 +22,18 @@ public class Msgs {
     public static final String WEIGHT = "Poids";
     public static final String NAME = "Nom";
     public static final String RATIO = "Ratio";
-    public static final String CHECKED_TITLE = "[?]";
-    public static final String CHECKED = "[x]";
-    public static final String UNCHECKED = "[ ]";
     public static final String WGHT_UNIT = "kg";
+
+
+    public static final String INDENT_1 = " %s%n";
+    public static final String INDENT_TAB = "\t%s%n";
+    public static void printHelp() {
+        System.out.printf("resoudre-sac-a-dos [chemin] [poids-maximal] [glouton | dynamique | pse]%n%n");
+        System.out.printf(INDENT_1, "chemin:");
+        System.out.printf(INDENT_TAB, "Le chemin d’un fichier csv contentant le nom d'un objet, son poids et sa valeur");
+        System.out.printf(INDENT_1, "poids-maximal:");
+        System.out.printf(INDENT_TAB, "Un nombre réel indiquant le poids maximal du sac à dos");
+        System.out.printf(INDENT_1, "methode:");
+        System.out.printf(INDENT_TAB, "Définis la méthode de résolution de l'algorithme, parmi glouton, dynnamique ou pse");
+    }
 }
