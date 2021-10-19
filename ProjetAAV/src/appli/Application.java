@@ -12,7 +12,6 @@ public class Application {
 	private static final String GLOUTON = "glouton";
 	private static final String DYNAMIQUE = "dynamique";
 	private static final String PSE = "pse";
-	private static final String CAT_TITLE_FSTR = "%n%s --%n";
 
 	public static void main(String[] args) {
 		if (args.length < 3) {

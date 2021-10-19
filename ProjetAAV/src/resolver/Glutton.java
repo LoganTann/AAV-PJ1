@@ -7,6 +7,11 @@ import java.util.List;
 
 public class Glutton implements ResolverInterface {
     public void solveProblem(Bagpack bag, List<Item> objects) {
+        glutton(bag, objects, false);
+    }
+
+
+    protected static float glutton(Bagpack bag, List<Item> objects, boolean usingForPse){
         if (objects.isEmpty()) throw new IllegalArgumentException(Msgs.OBJ_LIST_EMPTY);
 
         // calcul de (vi/pi) pour chaque objet puis tri selon ce ratio
@@ -30,6 +35,10 @@ public class Glutton implements ResolverInterface {
         if (Utils.isVerbose()) {
             print_debug(objects);
         }
+        if (usingForPse) {
+            bag.reset();
+        }
+        return cumulWeight;
     }
 
     /**

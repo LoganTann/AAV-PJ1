@@ -19,6 +19,8 @@ public class Bagpack {
 		this.items.add(object);
 	}
 
+	public void reset() { this.items.clear(); }
+
 	public String toString() {
 		StringBuilder out = new StringBuilder();
 		out.append(String.format("; %6s ; %6s ; %-20s; %-8s ;%n", Msgs.WEIGHT, Msgs.VALUE, Msgs.NAME, Msgs.RATIO));

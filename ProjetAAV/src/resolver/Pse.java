@@ -1,5 +1,6 @@
 package resolver;
 
+import appli.Utils;
 import sac.BasicItemInterface;
 import sac.Item;
 import sac.Bagpack;
@@ -26,7 +27,7 @@ public class Pse implements ResolverInterface {
 
         bag = argbag;
         allItems = argitems;
-        bestItem = new BasicItem(allItems.size(), 11);
+        bestItem = new BasicItem(bag.getMaxWeight(), Glutton.glutton(argbag, argitems, true));
         bestTreeReference = root;
 
         for (Item item: allItems) {
@@ -34,7 +35,10 @@ public class Pse implements ResolverInterface {
         }
         generate(0, root, sumOfObjectsValues);
         fillBag();
-        print_debug(root);
+
+        if (Utils.isVerbose()) {
+            print_debug(root);
+        }
     }
 
     private void fillBag() {
@@ -59,7 +63,7 @@ public class Pse implements ResolverInterface {
         }
 
         Item nextItem = allItems.get(depth);
-
+        depth++;
         // On ajoute la branche gauche tant qu'elle ne fait pas exploser le sac
         BasicItemInterface leftTreeItem = parent.copySum(nextItem.getWeight(), nextItem.getValue());
         if (leftTreeItem.getWeight() <= bag.getMaxWeight()) {
@@ -69,20 +73,20 @@ public class Pse implements ResolverInterface {
                 bestItem = leftTreeItem.copy();
                 bestTreeReference = leftTree;
             }
-            generate(depth+1, leftTree, parentBoundaryMax);
+            generate(depth, leftTree, parentBoundaryMax);
         }
 
-        float currentBoundaryMax = parentBoundaryMax - nextItem.getValue();
-        /* currentBoundaryMax    = borne max actuelle.
+        /* currentBoundaryMax = borne max actuelle.
          * Elle représente la valeur actuelle du noeud + la somme des valeurs de chaque objet potentiellement ajoutable.
          * On peut optimiser cela en faisant une différente de la somme de chaque items possible moins les items actuellement retirés
          * Idée trouvée ici (au moins on l'a compris, c'est l'unique code inspiré d'internet) : https://git.io/JK5Nk
          */
+        float currentBoundaryMax = parentBoundaryMax - nextItem.getValue();
 
         // On ajoute la branche droite si la borne max est bien supérieure à la min.
         if (currentBoundaryMax >= bestItem.getValue()) {
             PseTree rightTree = parent.generateRightTree();
-            generate(depth+1, rightTree, currentBoundaryMax);
+            generate(depth, rightTree, currentBoundaryMax);
         }
     }
 
@@ -90,16 +94,19 @@ public class Pse implements ResolverInterface {
     // DEBUG -----------------------------------------------------------------------------------------
 
     /**
-     * À des fins de tests uniquement. Ne pas noter !
+     * À des fins de tests uniquement. <b>Ne pas noter !</b>
      */
     private static void print_debug (PseTree root){
         StringBuilder sb = new StringBuilder();
         generateString(sb, root);
-        System.out.println(sb.toString());
+        System.out.println(sb);
     }
+
+    /**
+     * À des fins de tests uniquement. <b>Ne pas noter !</b>
+     */
     private static void generateString(StringBuilder sb, PseTree root) {
-        sb.append("[");
-        sb.append("val=" + root.getValue() + ",poids=" + root.getWeight());
+        sb.append("[").append("val=").append(root.getValue()).append(",poids=").append(root.getWeight());
         if (root.getLeftTree() != null) {
             generateString(sb, root.getLeftTree());
         } else sb.append("[]");
