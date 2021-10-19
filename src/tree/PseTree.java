@@ -3,6 +3,12 @@ package tree;
 import sac.BasicItem;
 import sac.BasicItemInterface;
 
+/**
+ * Déclaration d'un arbre binaire pour une utilisation au sein de l'algorithme PSE.
+ * Cette classe hérite de BinaryTree car c'est un arbre binaire qui a été adapté pour une utilisation spécifique.
+ * Cette classe implémente également l'interface BasicItemInterface car chaque feuille est représentée par un objet,
+ * et implémenter une telle interface permettait de faciliter l'écriture du code.
+ */
 public class PseTree extends BinaryTree implements BinaryTreeInterface, BasicItemInterface {
     // Les override de tree.BinaryTree --------------------------------
     public PseTree() {
@@ -39,10 +45,17 @@ public class PseTree extends BinaryTree implements BinaryTreeInterface, BasicIte
     }
 
     // Le code effectif -----------------------------------------------
-    private boolean isAtLeft;
+
+    /**
+     * Indique si l'arbre actuel est situé sur la branche gauche du parent.
+     * Signifie que l'on a ajouté un objet entre l'élément parent et celui-ci.
+     * @return true si l'abre a été déclaré comme ayant ajouté un item au sein de l'algo PSE.
+     */
     public boolean isLeft() {
         return isAtLeft;
     }
+    private boolean isAtLeft;
+
     /**
      * Génère la branche gauche (celle où on ajoute l'objet)
      * @param treeValue référence vers le BasicItem que contiendra l'arbre

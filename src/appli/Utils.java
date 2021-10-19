@@ -1,33 +1,19 @@
 package appli;
 
-
+/**
+ * Classe Utilitaire, contenant des fonctions statiques... utilitaires !
+ * N'est pas instanciable.
+ */
 public class Utils {
     private Utils() {
         throw new IllegalStateException(Msgs.STATIC_CLASS);
     }
+
     /**
      * Définis la précision de comparaison des décimales. Ex :  0.001 = Au millième près.
      * @see #areSame
      */
     private static final double FLOAT_CMP_PRECISION = 0.001;
-
-    /**
-     * Active le mode verbose (pour débogage uniquement !)
-     * @see #isVerbose()
-     */
-    private static boolean isVerbose = false;
-
-    public static void activateVerbose() {
-        isVerbose = true;
-    }
-    /**
-     * Indique si le mode verbose est activé. Cela fait des affichages de débuggage supplémentaire.
-     * <b>Doit être en false lors de la recette de production</b>
-     * @return true si le mode verbose est activé.
-     */
-    public static boolean isVerbose() {
-        return isVerbose;
-    }
 
     /**
      * Vérifie si deux nombres flottants sont identiques
@@ -39,12 +25,33 @@ public class Utils {
         return Math.abs(a - b) < FLOAT_CMP_PRECISION;
     }
 
-
     //////////////////////////////
     // DEBUG ONLY METHODS BELOW //
     //////////////////////////////
 
     /**
+     * Active le mode verbose (pour débogage uniquement !)
+     * @see #isVerbose()
+     */
+    private static boolean isVerbose = false;
+
+    /**
+     * Active le mode verbose
+     * @see Application#main
+     */
+    public static void activateVerbose() {
+        isVerbose = true;
+    }
+    /**
+     * Indique si le mode verbose est activé. Cela fait des affichages de débogage supplémentaire.
+     * @return true si le mode verbose est activé.
+     */
+    public static boolean isVerbose() {
+        return isVerbose;
+    }
+
+    /**
+     * Formate un tableau de float en une chaine de caractère
      * Fonction utilisée pour le débogage. <b>Ne pas noter !</b>
      * @param farray un tableau natif de type float[]
      * @param formatSize Précision de la partie entière. Ex : si on sait que la valeur maximale est inférieure à 999, alors il faut entrer 3.
@@ -65,6 +72,7 @@ public class Utils {
 
 
     /**
+     * Convertis un tableau de float en String.
      * Fonction utilisée pour le débogage. <b>Ne pas noter !</b>
      * @param farray un tableau natif de type float[]
      * @return une chaîne de caractère représentant le tableau passé en paramètre
@@ -75,6 +83,7 @@ public class Utils {
     }
 
     /**
+     * Génère une string de type [start, start+1, ..., end-1, end]
      * Fonction utilisée pour le débogage. <b>Ne pas noter !</b>
      * @param start chiffre de début
      * @param end chiffre de fin
@@ -89,14 +98,30 @@ public class Utils {
         return floatArrayToString(farray);
     }
 
+    /**
+     * Classe utilitaire statique permettant de mesurer le temps qui s'écoule.
+     * Fonction utilisée pour le débogage. <b>Ne pas noter !</b>
+     */
     public static class Chrono {
-        private static long startTime;
+        private static long startTime = -1;
+
+        /**
+         * Démarre (ou réinitialise) le chronomètre
+         * @see #read
+         */
         public static void start() {
             startTime = System.currentTimeMillis();
         }
-        public static String stop() {
+
+        /**
+         * Lis le chronomètre.
+         * @return le temps qui s'est éculé depuis le dernier appel start()
+         * @see #start
+         */
+        public static String read() {
+            if (startTime < 0) return Msgs.TIMER_NOT_STARTED;
             long endTime = System.currentTimeMillis();
-            return "Durée d'exécution : " + (endTime-startTime) + "ms";
+            return String.format(Msgs.TIMER_ELAPSED, endTime-startTime);
         }
     }
 }

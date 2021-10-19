@@ -8,6 +8,9 @@ import sac.*;
 import java.io.FileNotFoundException;
 import java.util.List;
 
+/**
+ * Porte d'entrée du programme.
+ */
 public class Application {
 	private static final String GLOUTON = "glouton";
 	private static final String DYNAMIQUE = "dynamique";
@@ -36,9 +39,17 @@ public class Application {
 
 		Utils.Chrono.start();
 		System.out.println(proceed(algo, objects, maxWeight));
-		System.out.println(Utils.Chrono.stop());
+		System.out.println(Utils.Chrono.read());
 	}
 
+	/**
+	 * Résouds le problème : fabrique un sac, récupère l'algo nécessaire d'ajout d'objets et retourne le
+	 * sac avec son joli contenu.
+	 * @param algorithm L'algorithme de résolution voulu : glouton, dynamique ou pse
+	 * @param objects Une liste d'objets potentiels à ajouter
+	 * @param maxWeight Le poids max du sac
+	 * @return Le sac à dos contenant les objets à l'issue de la résolutiion
+	 */
 	private static String proceed(String algorithm, List<Item> objects, float maxWeight) {
 		Bagpack bag = new Bagpack(maxWeight);
 		getResolverInstance(algorithm)
@@ -46,6 +57,11 @@ public class Application {
 		return bag.toString();
 	}
 
+	/**
+	 * Récupère l'instance de classe permettant de résoudre le problème
+	 * @param algorithm L'algorithme de résolution voulu : glouton, dynamique ou pse
+	 * @return L' instance de résolution correspondante
+	 */
 	private static ResolverInterface getResolverInstance(String algorithm) {
 		switch (algorithm) {
 			case GLOUTON:

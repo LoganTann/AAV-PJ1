@@ -6,10 +6,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Un objet un peu plus complexe, qui en plus de se caractériser par sa valeur et son poids,
+ * se caractérise aussi par un nom et un éventuel ratio (utilisé par l'algorithme glouton).
+ */
 public class Item extends BasicItem implements BasicItemInterface{
 	private final String name;
 	private float ratio;
 
+	/**
+	 * Génère une liste d'Items depuis un fichier CSV spécifié en paramètre
+	 * @param chemin Le chemin du fichier CSV à charger
+	 * @return Une liste d'items, ajoutables potentiellement au sein du sac à dos
+	 * @throws FileNotFoundException si le chemin est invalide
+	 */
 	public static List<Item> loadObjectsFromFile(String chemin) throws FileNotFoundException {
 		Scanner sc= new Scanner(new File(chemin));
 		ArrayList<Item> retval = new ArrayList<>();
@@ -28,12 +38,22 @@ public class Item extends BasicItem implements BasicItemInterface{
 		return retval;
 	}
 
-	public Item(String nom, float valeur, float poids) {
-		super(poids, valeur);
-		this.name = nom;
+	/**
+	 * Fabrique un objet qui pourra être potentiellement ajoutable dans le sac
+	 * @param name le nom de l'objet
+	 * @param value le prix de l'objet
+	 * @param weight le poids/volume de l'objet
+	 */
+	public Item(String name, float value, float weight) {
+		super(weight, value);
+		this.name = name;
 		this.ratio = -1; // utilise pour l'algo glouton
 	}
 
+	/**
+	 * Affiche l'objet sous le format "  Poids ; Valeur ; Nom                 ; Ratio    ;"
+	 * @return représentation de l'objet
+	 */
 	public String toString() {
 		return String.format("; %6.2f ; %6.2f ; %-20s; %.6f ;%n",
 				this.getWeight(), this.getValue(), this.name, this.ratio > 0 ? 0f : this.ratio );

@@ -5,11 +5,15 @@ import sac.Item;
 
 import java.util.List;
 
+/**
+ * Interface déclarant un algorithme permettant de résoudre le problème du sac à dos
+ */
 public interface ResolverInterface {
     /**
-     * Interface résolvant le problème du sac à dos (de quelque manière que ce soit)
-     * @param bag le sac à dos
-     * @param objects les objets potentiels à mettre dedans
+     * Fonction qui se charge d'initialiser, de résoudre le problème puis d'ajouter
+     * les objets traités au sein du sac passé en paramètres
+     * @param bag Le sac dans lequel les objets seront ajoutés
+     * @param items Une liste d'objets potentiels à ajouter
      */
-    void solveProblem(Bagpack bag, List<Item> objects);
+    void solveProblem(Bagpack bag, List<Item> items);
 }

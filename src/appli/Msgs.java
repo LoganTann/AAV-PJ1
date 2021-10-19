@@ -1,10 +1,11 @@
 package appli;
 
+/**
+ * Une classe totalement overkill mais sympa si on veut traduire l'appli
+ * Stocke chaque chaine de caractères dans des variables statiques
+ * N'est pas instanciable.
+ */
 public class Msgs {
-
-    /**
-     * Une classe totalement overkill mais sympa si on veut traduire l'appli
-     */
     private Msgs() {
         throw new IllegalStateException(STATIC_CLASS);
     }
@@ -23,10 +24,15 @@ public class Msgs {
     public static final String NAME = "Nom";
     public static final String RATIO = "Ratio";
     public static final String WGHT_UNIT = "kg";
-
+    public static final String TIMER_NOT_STARTED = "<timer non démarré>";
+    public static final String TIMER_ELAPSED = "Durée d'exécution : %8d ms";
 
     public static final String INDENT_1 = " %s%n";
     public static final String INDENT_TAB = "\t%s%n";
+
+    /**
+     * Affiche l'aide du programme. Pour l'exécuter, appelez celui-ci avec moins de trois arguments.
+     */
     public static void printHelp() {
         System.out.printf("resoudre-sac-a-dos [chemin] [poids-maximal] [glouton | dynamique | pse] [-v]%n%n");
         System.out.printf(INDENT_1, "chemin:");

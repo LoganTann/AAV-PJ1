@@ -5,6 +5,9 @@ import appli.Msgs;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Le sac à dos dans lequel on va ajouter des objets dedans
+ */
 public class Bagpack {
 	private final float poidsMaximal;
 	private final List<Item> items = new ArrayList<>();

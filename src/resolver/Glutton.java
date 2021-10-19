@@ -5,12 +5,26 @@ import sac.*;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Algorithme de résolution approximative du problème du sac à dos, via la méthode Glouttone
+ */
 public class Glutton implements ResolverInterface {
+    /**
+     * Résouds le problème du sac à dos via la méthode Gloutonne
+     */
     public void solveProblem(Bagpack bag, List<Item> objects) {
         glutton(bag, objects, false);
     }
 
 
+    /**
+     * Fonction permettant d'effectuer la méthode gloutonne
+     * @param bag Le sac dans lequel les objets seront ajoutés
+     * @param objects Une liste d'objets potentiels à ajouter
+     * @param usingForPse True si on veut utiliser cette algo seulement pour PSE
+     * @return Le poids de tous les objets ajouté dans le sac (sera utile pour l'algo PSE)
+     * @see Pse
+     */
     protected static float glutton(Bagpack bag, List<Item> objects, boolean usingForPse){
         if (objects.isEmpty()) throw new IllegalArgumentException(Msgs.OBJ_LIST_EMPTY);
 
@@ -43,6 +57,7 @@ public class Glutton implements ResolverInterface {
     /**
      * À des fins de tests uniquement. <b>Ne pas noter !</b>
      * @param objects Liste des objets traités par l'algorithme
+     * @see #solveProblem
      */
     private static void print_debug(List<Item> objects) {
         System.out.println("# Début du verbose glouton --");
