@@ -25,4 +25,15 @@ public class Msgs {
     public static final String CHECKED = "[x]";
     public static final String UNCHECKED = "[ ]";
     public static final String WGHT_UNIT = "kg";
+
+
+    public static void printHelp() {
+        System.out.printf("%s%n%n", "resoudre-sac-a-dos [chemin] [poids-maximal] [glouton | dynamique | pse]");
+        System.out.printf(" %s%n", "chemin:");
+        System.out.printf("\t%s%n", "Le chemin d’un fichier csv contentant le nom d'un objet, son poids et sa valeur");
+        System.out.printf(" %s%n", "poids-maximal:");
+        System.out.printf("\t%s%n", "Un nombre réel indiquant le poids maximal du sac à dos");
+        System.out.printf(" %s%n", "methode:");
+        System.out.printf("\t%s%n", "Définis la méthode de résolution de l'algorithme, parmi glouton, dynnamique ou pse");
+    }
 }

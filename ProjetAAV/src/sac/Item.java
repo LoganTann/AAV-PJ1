@@ -1,18 +1,13 @@
 package sac;
 
-import appli.Msgs;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Item {
+public class Item extends BasicItem implements BasicItemInterface{
 	private final String name;
-	private final float value, weight;
-
-	private boolean isInTheBag;
 	private float ratio;
 
 	public static List<Item> loadObjectsFromFile(String chemin) throws FileNotFoundException {
@@ -34,40 +29,21 @@ public class Item {
 	}
 
 	public Item(String nom, float valeur, float poids) {
+		super(poids, valeur);
 		this.name = nom;
-		this.value = valeur;
-		this.weight = poids;
-		this.isInTheBag = false;
 		this.ratio = -1; // utilise pour l'algo glouton
 	}
 
 	public String toString() {
-		return String.format("%s ; %6.2f ; %6.2f ; %-20s; %.6f ;%n",
-				this.isInTheBag ? Msgs.CHECKED : Msgs.UNCHECKED ,
-				this.weight, this.value, this.name, this.ratio );
+		return String.format("; %6.2f ; %6.2f ; %-20s; %.6f ;%n",
+				this.getWeight(), this.getValue(), this.name, this.ratio > 0 ? 0f : this.ratio );
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public float getValue() {
-		return value;
-	}
-
-	public float getWeight() {
-		return weight;
-	}
-
 	public float getRatio() { return ratio; }
-
-	public boolean isInTheBag() {
-		return isInTheBag;
-	}
-
-	public void setIsInTheBag() {
-		isInTheBag = true;
-	}
 
 	public void setRatio(float ratio) { this.ratio = ratio; }
 }
