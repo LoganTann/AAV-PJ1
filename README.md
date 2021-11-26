@@ -1,6 +1,10 @@
 
   <img align="right" src="https://cdn.discordapp.com/attachments/853747798545793056/899951010917777448/unknown.png"/>
-  
+
+## Project archived since we got the final score of the homework. Please contact us using our github e-mail if needed.
+
+Note obtenue : 15/20. Aucun barème fourni.
+
 ## Projet d'Algorithmie Avancée - Problème du sac à dos
 *Logan TANN & Sophie Minos*
 
